@@ -49,7 +49,8 @@ jobs:
         run: |
           git config --local user.name github-actions 
           git config --local user.email github-actions@github.com
-          sed -E i '' "s/[0-9]{8}\-master\-[a-z0-9]{8}/${{ steps.getrefs.outputs.longtag }}/" ${{ github.workspace}}/tools/docker_dev/.gitpod.Dockerfile
+          echo '${{ steps.getrefs.outputs.longtag }}'
+          sed -E -i '' "s/[0-9]{8}\-master\-[a-z0-9]{8}/${{ steps.getrefs.outputs.longtag }}/" ${{ github.workspace}}/tools/docker_dev/.gitpod.Dockerfile
           git add .
           git commit -m "MAN: Update gitpod Dockerfile"
           git push
