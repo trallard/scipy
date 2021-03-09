@@ -3,7 +3,7 @@ name: Build Docker images
 on:
   push: 
     branches:
-      - master
+      - '*'
     tags:
       - '*'
 
@@ -12,7 +12,7 @@ jobs:
     name: Build Docker image 
     runs-on: ubuntu-latest
     environment: scipy-dev
-    if: "github.repository_owner == 'scipy' && !contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[skip github]')"
+    if: "github.repository_owner == 'trallard' && !contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[skip github]')"
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
           echo "::set-output name=branch::${raw_branch//\//-}"
           echo "::set-output name=date::$(date +'%Y%m%d')"
           echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-          echo "::set-output name=longtag::$(echo scipy/scipy-dev:${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }})"
+          echo "::set-output name=longtag::$(echo ${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }})"
         id: getrefs
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -44,7 +44,7 @@ jobs:
           file: "./tools/docker_dev/Dockerfile"
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            scipy/scipy-dev:${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }}, scipy/scipy-dev:latest
+            trallard/scipy-dev:${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }}, trallard/scipy-dev:latest
       - name: Update Dockerfile 
         uses: actions/checkout@v2
         run: |
