@@ -47,9 +47,9 @@ jobs:
             trallard/scipy-dev:${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }}, trallard/scipy-dev:latest
       - name: Update Dockerfile 
         run: |
-          git config user.name github-actions 
-          git config user.email github-actions@github.com
-          sed -E -i '' "s/[0-9]{8}\-master\-[a-z0-9]{8}/${{ steps.getrefs.outputs.longtag }}/" tools/docker_dev/.gitpod.Dockerfile
+          git config --local user.name github-actions 
+          git config --local user.email github-actions@github.com
+          sed "s/[0-9]{8}\-master\-[a-z0-9]{8}/${{ steps.getrefs.outputs.longtag }}/" ${{ github.workspace}}/tools/docker_dev/.gitpod.Dockerfile
           git add .
           git commit -m "MAN: Update gitpod Dockerfile"
           git push
