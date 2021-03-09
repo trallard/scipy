@@ -27,7 +27,6 @@ jobs:
           echo "::set-output name=branch::${raw_branch//\//-}"
           echo "::set-output name=date::$(date +'%Y%m%d')"
           echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-          echo "::set-output name=longtag::$(echo ${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }})"
         id: getrefs
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -49,8 +48,8 @@ jobs:
         run: |
           git config --local user.name github-actions 
           git config --local user.email github-actions@github.com
-          echo '${{ steps.getrefs.outputs.longtag }}'
-          sed -E -i '' "s/[0-9]{8}\-master\-[a-z0-9]{8}/${{ steps.getrefs.outputs.longtag }}/" ${{ github.workspace}}/tools/docker_dev/.gitpod.Dockerfile
+          echo '${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }}'
+          sed -E -i 's/[0-9]{8}\-master\-[a-z0-9]{8}/${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }}/' ${{ github.workspace}}/tools/docker_dev/.gitpod.Dockerfile
           git add .
           git commit -m "MAN: Update gitpod Dockerfile"
           git push
