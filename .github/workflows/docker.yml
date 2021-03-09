@@ -46,7 +46,6 @@ jobs:
           tags: |
             trallard/scipy-dev:${{ steps.getrefs.outputs.date }}-${{ steps.getrefs.outputs.branch}}-${{ steps.getrefs.outputs.sha8 }}, trallard/scipy-dev:latest
       - name: Update Dockerfile 
-        uses: actions/checkout@v2
         run: |
           git config user.name github-actions 
           git config user.email github-actions@github.com
