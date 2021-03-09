@@ -10,6 +10,7 @@ FROM ${BASE_CONTAINER}
 RUN apt-get update && \ 
     apt-get install -yq --no-install-recommends \
     bash-completion \
+    git \
     htop \
     jq \
     less \
